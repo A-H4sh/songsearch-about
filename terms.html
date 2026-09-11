@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="SongSearchFromLibrary の利用規約。">
+<title>利用規約 — SongSearchFromLibrary</title>
+<style>
+:root{
+  color-scheme: light dark;
+  --paper:#fcfcfb; --surface:#f2f2ef; --ink:#16171a; --ink-soft:#4c5054;
+  --ink-faint:#74797e; --line:#e0e0dc; --accent:#2f6f4f; --accent-ink:#1e4d36;
+  --accent-bg:#e8f2ec;
+  --sans:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic Medium","Yu Gothic",
+    "Noto Sans JP",Meiryo,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Noto Sans Mono CJK JP",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#111214; --surface:#1a1c1f; --ink:#e7e9ea; --ink-soft:#aeb3b7;
+    --ink-faint:#848a8f; --line:#2a2d31; --accent:#5fb98c; --accent-ink:#8ed4ae;
+    --accent-bg:#15251e;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+  font-size:16px;line-height:1.9;font-feature-settings:"palt" 1;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:44rem;margin:0 auto;padding:3rem 1.25rem 5rem}
+a{color:var(--accent-ink);text-underline-offset:.18em}
+a:hover{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent);margin:0 0 .7rem}
+h1{font-size:clamp(1.6rem,4vw,2.15rem);line-height:1.4;margin:0 0 .5rem;
+  letter-spacing:.01em;text-wrap:balance}
+h2{font-size:1.1rem;margin:2.5rem 0 .3rem;padding-top:1.4rem;
+  border-top:1px solid var(--line);text-wrap:balance}
+h3{font-size:.95rem;margin:1.6rem 0 .2rem}
+p,li{text-wrap:pretty}
+.lede{font-size:1.05rem;color:var(--ink-soft);margin:0 0 1.5rem}
+ul,ol{padding-left:1.3rem}
+code{font-family:var(--mono);font-size:.85em;background:var(--surface);
+  padding:.12em .38em;border-radius:3px;word-break:break-word}
+.box{background:var(--accent-bg);border-left:3px solid var(--accent);
+  padding:.85rem 1.1rem;margin:1.4rem 0;border-radius:0 3px 3px 0;font-size:.95rem}
+.box>:first-child{margin-top:0}.box>:last-child{margin-bottom:0}
+.meta{font-size:.85rem;color:var(--ink-faint);border-top:1px solid var(--line);
+  margin-top:3rem;padding-top:1.2rem}
+.nav{display:flex;flex-wrap:wrap;gap:1.1rem;font-size:.875rem;
+  padding-bottom:1.3rem;margin-bottom:1.6rem;border-bottom:1px solid var(--line)}
+.tw{overflow-x:auto;margin:1.2rem 0;border:1px solid var(--line);border-radius:4px}
+table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:26rem}
+th,td{text-align:left;padding:.55rem .8rem;border-bottom:1px solid var(--line);
+  vertical-align:top}
+thead th{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-faint);background:var(--surface)}
+tbody tr:last-child td{border-bottom:0}
+@media print{
+  :root{--paper:#fff;--ink:#000;--surface:#f4f4f4;--line:#bbb;--ink-soft:#333;--ink-faint:#555}
+  .nav{display:none}
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:.75em;color:#555}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="nav">
+    <a href="./">ホーム</a>
+    <a href="./privacy.html">プライバシーポリシー</a>
+    <a href="./terms.html">利用規約</a>
+  </nav>
+
+  <p class="eyebrow">Terms of Service</p>
+  <h1>利用規約</h1>
+  <p class="lede">
+    SongSearchFromLibrary（以下「本アプリ」）の利用条件を定めます。
+  </p>
+
+  <h2>1. 本アプリの位置づけ</h2>
+  <p>
+    本アプリは作者が個人で開発・運用するツールであり、商用サービスではありません。
+    現在の利用者は作者本人のみです。
+  </p>
+
+  <h2>2. 利用にあたって</h2>
+  <ul>
+    <li>本アプリの利用には Google アカウントの認可が必要です。</li>
+    <li>本アプリは読み取り専用の権限のみを要求し、アカウントへの書き込みは行いません。</li>
+    <li>認可はいつでも
+      <a href="https://myaccount.google.com/permissions">Google アカウントの設定</a>から取り消せます。</li>
+  </ul>
+
+  <h2>3. 禁止事項</h2>
+  <ul>
+    <li>他人の Google アカウントの資格情報を用いて本アプリを利用すること</li>
+    <li>本アプリを通じて取得した歌詞データを複製・再配布・販売すること</li>
+    <li>本アプリに対する不正アクセス、過負荷を与える行為</li>
+  </ul>
+
+  <h2>4. 歌詞データの取り扱い</h2>
+  <p>
+    本アプリが取得する歌詞は、検索用の索引を作る目的でのみ利用します。
+    歌詞の著作権は各権利者に帰属します。本アプリは歌詞データを再配布しません。
+  </p>
+
+  <h2>5. 免責</h2>
+  <ul>
+    <li>本アプリは現状有姿で提供され、動作の継続性、検索結果の正確性、
+        可用性について、明示黙示を問わず一切の保証をしません。</li>
+    <li>本アプリの利用または利用不能から生じたいかなる損害についても、
+        作者は責任を負いません。</li>
+    <li>本アプリは外部サービス（YouTube、Google Gemini、歌詞提供元）に依存しており、
+        それらの仕様変更や停止により、予告なく機能が失われることがあります。</li>
+  </ul>
+
+  <h2>6. サービスの変更・終了</h2>
+  <p>作者は、予告なく本アプリの内容を変更し、または運用を終了することがあります。</p>
+
+  <h2>7. 準拠法</h2>
+  <p>本規約は日本法に準拠します。</p>
+
+  <h2>8. 連絡先</h2>
+  <p><a href="mailto:hashimoto7965@gmail.com">hashimoto7965@gmail.com</a></p>
+
+  <div class="meta">
+    <p>
+      本アプリは YouTube API サービスを利用しています。利用者は
+      <a href="https://www.youtube.com/t/terms">YouTube 利用規約</a>にも同意したものとみなされます。
+    </p>
+    <p>制定・最終更新: 2026-09-11</p>
+  </div>
+</div>
+</body>
+</html>

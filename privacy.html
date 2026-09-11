@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="SongSearchFromLibrary のプライバシーポリシー。取得する Google ユーザーデータ、その用途、保存場所、第三者提供の有無、削除方法。">
+<title>プライバシーポリシー — SongSearchFromLibrary</title>
+<style>
+:root{
+  color-scheme: light dark;
+  --paper:#fcfcfb; --surface:#f2f2ef; --ink:#16171a; --ink-soft:#4c5054;
+  --ink-faint:#74797e; --line:#e0e0dc; --accent:#2f6f4f; --accent-ink:#1e4d36;
+  --accent-bg:#e8f2ec;
+  --sans:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic Medium","Yu Gothic",
+    "Noto Sans JP",Meiryo,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Noto Sans Mono CJK JP",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#111214; --surface:#1a1c1f; --ink:#e7e9ea; --ink-soft:#aeb3b7;
+    --ink-faint:#848a8f; --line:#2a2d31; --accent:#5fb98c; --accent-ink:#8ed4ae;
+    --accent-bg:#15251e;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+  font-size:16px;line-height:1.9;font-feature-settings:"palt" 1;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:44rem;margin:0 auto;padding:3rem 1.25rem 5rem}
+a{color:var(--accent-ink);text-underline-offset:.18em}
+a:hover{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent);margin:0 0 .7rem}
+h1{font-size:clamp(1.6rem,4vw,2.15rem);line-height:1.4;margin:0 0 .5rem;
+  letter-spacing:.01em;text-wrap:balance}
+h2{font-size:1.1rem;margin:2.5rem 0 .3rem;padding-top:1.4rem;
+  border-top:1px solid var(--line);text-wrap:balance}
+h3{font-size:.95rem;margin:1.6rem 0 .2rem}
+p,li{text-wrap:pretty}
+.lede{font-size:1.05rem;color:var(--ink-soft);margin:0 0 1.5rem}
+ul,ol{padding-left:1.3rem}
+code{font-family:var(--mono);font-size:.85em;background:var(--surface);
+  padding:.12em .38em;border-radius:3px;word-break:break-word}
+.box{background:var(--accent-bg);border-left:3px solid var(--accent);
+  padding:.85rem 1.1rem;margin:1.4rem 0;border-radius:0 3px 3px 0;font-size:.95rem}
+.box>:first-child{margin-top:0}.box>:last-child{margin-bottom:0}
+.meta{font-size:.85rem;color:var(--ink-faint);border-top:1px solid var(--line);
+  margin-top:3rem;padding-top:1.2rem}
+.nav{display:flex;flex-wrap:wrap;gap:1.1rem;font-size:.875rem;
+  padding-bottom:1.3rem;margin-bottom:1.6rem;border-bottom:1px solid var(--line)}
+.tw{overflow-x:auto;margin:1.2rem 0;border:1px solid var(--line);border-radius:4px}
+table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:26rem}
+th,td{text-align:left;padding:.55rem .8rem;border-bottom:1px solid var(--line);
+  vertical-align:top}
+thead th{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-faint);background:var(--surface)}
+tbody tr:last-child td{border-bottom:0}
+@media print{
+  :root{--paper:#fff;--ink:#000;--surface:#f4f4f4;--line:#bbb;--ink-soft:#333;--ink-faint:#555}
+  .nav{display:none}
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:.75em;color:#555}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="nav">
+    <a href="./">ホーム</a>
+    <a href="./privacy.html">プライバシーポリシー</a>
+    <a href="./terms.html">利用規約</a>
+  </nav>
+
+  <p class="eyebrow">Privacy Policy</p>
+  <h1>プライバシーポリシー</h1>
+  <p class="lede">
+    SongSearchFromLibrary（以下「本アプリ」）が取り扱う情報について説明します。
+    本アプリは作者が自分ひとりで使うために運用している個人用ツールです。
+  </p>
+
+  <h2>1. 要求する権限（OAuth スコープ）</h2>
+  <p>本アプリが要求する Google の権限は、次の 1 つだけです。</p>
+  <div class="box">
+    <p><code>https://www.googleapis.com/auth/youtube.readonly</code></p>
+    <p>
+      これは<strong>読み取り専用</strong>の権限です。本アプリは YouTube Data API v3 に対して
+      GET リクエストのみを発行し、利用者のアカウントへの書き込み（高評価の付け外し、
+      プレイリストの編集、動画の投稿、再生履歴の変更）は行いません。
+    </p>
+  </div>
+
+  <h2>2. 取得する情報</h2>
+  <p>上記の権限を用いて、利用者本人について次の情報を読み取ります。</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>情報</th><th>取得元</th><th>用途</th></tr></thead>
+      <tbody>
+        <tr><td>高く評価した動画・曲の一覧</td><td>YouTube Data API v3</td><td>検索対象の決定</td></tr>
+        <tr><td>プレイリストとその収録曲</td><td>同上</td><td>検索範囲の絞り込み</td></tr>
+        <tr><td>曲名・アーティスト名・アルバム名・動画 ID・再生時間・サムネイル URL</td><td>同上</td><td>検索索引の作成と結果表示</td></tr>
+        <tr><td>チャンネル情報（高評価プレイリストの ID 取得のため）</td><td>同上</td><td>上記の取得に必要</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    本アプリは、Gmail、連絡先、カレンダー、位置情報、支払い情報など、
+    上記以外の Google ユーザーデータには一切アクセスしません。
+  </p>
+
+  <h2>3. 情報の利用目的</h2>
+  <p>
+    取得した情報は、<strong>利用者自身が自分の楽曲を検索できるようにすること</strong>のみに使用します。
+    広告、プロファイリング、行動分析、機械学習モデルの訓練には使用しません。
+  </p>
+
+  <h2>4. 保存場所と保存期間</h2>
+  <p>
+    取得した情報は、利用者本人が管理するサーバー上の SQLite データベースに保存されます。
+    第三者のデータベースサービスには保存しません。
+    アクセス権を取り消し、データベースファイルを削除すれば、保存された情報は完全に消えます。
+  </p>
+
+  <h2>5. 外部サービスへの送信</h2>
+  <p>本アプリは、機能の実現のために次の外部サービスと通信します。送信する内容を明示します。</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>送信先</th><th>送信する内容</th><th>目的</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Google Gemini API</td>
+          <td>曲名、チャンネル名、再生時間、カテゴリ ID などの<strong>公開メタデータ</strong></td>
+          <td>その項目が楽曲か否か（音楽以外の動画の混入）の判定。動画本体や音声、利用者の識別情報は送信しません</td>
+        </tr>
+        <tr>
+          <td>YouTube Music（未認証）</td>
+          <td>動画 ID</td>
+          <td>歌詞の取得。この通信に利用者の認証情報は使用しません</td>
+        </tr>
+        <tr>
+          <td>LRCLIB / NetEase Cloud Music（任意・無効化可能）</td>
+          <td>曲名、アーティスト名、再生時間</td>
+          <td>YouTube Music に歌詞が無い曲の補完</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    これらへの送信は、いずれも設定で無効にできます。
+    取得した Google ユーザーデータを、広告事業者を含むいかなる第三者にも
+    <strong>販売・貸与・提供しません</strong>。
+  </p>
+
+  <h2>6. Google API サービスのユーザーデータに関するポリシー</h2>
+  <p>
+    本アプリによる Google API から受け取った情報の利用および他者への転送は、
+    <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API サービスのユーザーデータに関するポリシー</a>
+    （限定的使用の要件を含む）を遵守します。
+  </p>
+
+  <h2>7. アクセス権の取り消しとデータの削除</h2>
+  <ol>
+    <li>
+      <a href="https://myaccount.google.com/permissions">Google アカウントの「サードパーティ製のアプリとサービス」</a>
+      から本アプリを削除すると、以後のアクセスは停止します。
+    </li>
+    <li>
+      サーバー上の認証トークン（<code>google_token.json</code>）およびデータベースを削除すると、
+      保存済みの情報も消えます。
+    </li>
+  </ol>
+
+  <h2>8. セキュリティ</h2>
+  <p>
+    認証トークンはサーバー上でパーミッション 0600 のファイルとして保管し、
+    公開リポジトリには一切含めません。Web インターフェースへのアクセスは
+    TLS で暗号化し、共有シークレットによる認証を必須としています。
+  </p>
+
+  <h2>9. 子どもの利用</h2>
+  <p>本アプリは作者本人のみが利用する個人用ツールであり、子どもの利用を想定していません。</p>
+
+  <h2>10. 変更</h2>
+  <p>本ポリシーを変更した場合は、このページを更新し、末尾の更新日を改めます。</p>
+
+  <h2>11. 連絡先</h2>
+  <p><a href="mailto:hashimoto7965@gmail.com">hashimoto7965@gmail.com</a></p>
+
+  <div class="meta">
+    <p>
+      本アプリは YouTube API サービスを利用しています。
+      <a href="https://www.youtube.com/t/terms">YouTube 利用規約</a>／
+      <a href="https://policies.google.com/privacy">Google プライバシーポリシー</a>
+    </p>
+    <p>制定・最終更新: 2026-09-11</p>
+  </div>
+</div>
+</body>
+</html>
