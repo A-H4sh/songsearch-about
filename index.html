@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="自分が YouTube Music で高く評価した曲を、うろ覚えの歌詞から探し出す個人用ツール。">
+<meta name="description" content="自分が YouTube Music で高く評価した曲を、うろ覚えの歌詞から探し出すツール。">
 <title>SongSearchFromLibrary</title>
 <style>
 :root{
@@ -75,7 +75,7 @@ tbody tr:last-child td{border-bottom:0}
   <h1>SongSearchFromLibrary</h1>
   <p class="lede">
     自分が YouTube Music で高く評価した曲を、<strong>うろ覚えの歌詞から</strong>探し出すための
-    個人用ツールです。作者が自分ひとりで使うために作り、運用しています。
+    ツールです。作者が個人で開発・運用しています。
   </p>
 
   <h2>解決したい問題</h2>
@@ -102,14 +102,16 @@ tbody tr:last-child td{border-bottom:0}
   <div class="box">
     <p>
       <strong>書き込みは一切行いません。</strong>
-      要求する権限は <code>https://www.googleapis.com/auth/youtube.readonly</code> の 1 つだけで、
+      要求する権限は <code>youtube.readonly</code>（ライブラリの読み取り）と、
+      ログインのための <code>openid</code> / <code>userinfo.email</code> の 3 つです。いずれも読み取り専用で、
       再生履歴の変更、高評価の付け外し、プレイリストの編集、動画の投稿は、いずれも技術的に不可能です。
     </p>
   </div>
 
   <h2>誰が使えるか</h2>
   <p>
-    公開サービスではありません。作者個人が自分のアカウントに対して使うツールです。
+    現在は限定公開です。作者と、作者がアクセスを許可した利用者だけが利用できます。
+    利用者はそれぞれ自分の Google アカウントでログインし、自分のライブラリだけを検索します。
     ソフトウェアの構成は下記リポジトリで確認できます。
   </p>
 
@@ -124,7 +126,7 @@ tbody tr:last-child td{border-bottom:0}
       <a href="https://www.youtube.com/t/terms">YouTube 利用規約</a>および
       <a href="https://policies.google.com/privacy">Google プライバシーポリシー</a>が適用されます。
     </p>
-    <p>最終更新: 2026-09-11</p>
+    <p>最終更新: 2026-09-16</p>
   </div>
 </div>
 </body>
