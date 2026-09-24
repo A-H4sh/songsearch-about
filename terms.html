@@ -1,139 +1,189 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="SongSearchFromLibrary の利用規約。">
-<title>利用規約 — SongSearchFromLibrary</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<meta name="referrer" content="no-referrer">
+<title>利用規約 — SongSearch</title>
+<!--
+  Kept deliberately short.  A public deployment needs terms that say what the
+  service is, what it does not promise, and what the user may not do with it;
+  everything past that is length for its own sake and nobody reads it.
+
+  Two clauses are NOT boilerplate and should not be trimmed:
+
+    §4  the lyric clause.  The whole design rests on never displaying a lyric
+        line -- 文化庁「著作権法第30条の4」の基本的な考え方 問16 treats even one
+        displayed line as leaving the "情報解析" exemption.  Saying so here is
+        part of meaning it.
+    §7  pricing.  The service is free today and a paid tier is intended.
+        Announcing in advance is a promise being made now, when it is cheap to
+        keep, rather than argued about later.
+-->
 <style>
-:root{
-  color-scheme: light dark;
-  --paper:#fcfcfb; --surface:#f2f2ef; --ink:#16171a; --ink-soft:#4c5054;
-  --ink-faint:#74797e; --line:#e0e0dc; --accent:#2f6f4f; --accent-ink:#1e4d36;
-  --accent-bg:#e8f2ec;
-  --sans:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic Medium","Yu Gothic",
-    "Noto Sans JP",Meiryo,system-ui,-apple-system,"Segoe UI",sans-serif;
-  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Noto Sans Mono CJK JP",monospace;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --paper:#111214; --surface:#1a1c1f; --ink:#e7e9ea; --ink-soft:#aeb3b7;
-    --ink-faint:#848a8f; --line:#2a2d31; --accent:#5fb98c; --accent-ink:#8ed4ae;
-    --accent-bg:#15251e;
+  :root {
+    --bg: #10131a; --bg-soft: #171b25; --bg-card: #1b2130; --line: #2a3346;
+    --fg: #e8ecf5; --fg-dim: #9aa5bd; --fg-faint: #6b7590;
+    --accent: #7cc4ff; --accent-soft: #1d3a55; --warn: #ffc46b;
+    --radius: 14px;
+    --font: system-ui, -apple-system, "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+            "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
   }
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
-  font-size:16px;line-height:1.9;font-feature-settings:"palt" 1;
-  -webkit-font-smoothing:antialiased}
-.wrap{max-width:44rem;margin:0 auto;padding:3rem 1.25rem 5rem}
-a{color:var(--accent-ink);text-underline-offset:.18em}
-a:hover{color:var(--accent)}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--accent);margin:0 0 .7rem}
-h1{font-size:clamp(1.6rem,4vw,2.15rem);line-height:1.4;margin:0 0 .5rem;
-  letter-spacing:.01em;text-wrap:balance}
-h2{font-size:1.1rem;margin:2.5rem 0 .3rem;padding-top:1.4rem;
-  border-top:1px solid var(--line);text-wrap:balance}
-h3{font-size:.95rem;margin:1.6rem 0 .2rem}
-p,li{text-wrap:pretty}
-.lede{font-size:1.05rem;color:var(--ink-soft);margin:0 0 1.5rem}
-ul,ol{padding-left:1.3rem}
-code{font-family:var(--mono);font-size:.85em;background:var(--surface);
-  padding:.12em .38em;border-radius:3px;word-break:break-word}
-.box{background:var(--accent-bg);border-left:3px solid var(--accent);
-  padding:.85rem 1.1rem;margin:1.4rem 0;border-radius:0 3px 3px 0;font-size:.95rem}
-.box>:first-child{margin-top:0}.box>:last-child{margin-bottom:0}
-.meta{font-size:.85rem;color:var(--ink-faint);border-top:1px solid var(--line);
-  margin-top:3rem;padding-top:1.2rem}
-.nav{display:flex;flex-wrap:wrap;gap:1.1rem;font-size:.875rem;
-  padding-bottom:1.3rem;margin-bottom:1.6rem;border-bottom:1px solid var(--line)}
-.tw{overflow-x:auto;margin:1.2rem 0;border:1px solid var(--line);border-radius:4px}
-table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:26rem}
-th,td{text-align:left;padding:.55rem .8rem;border-bottom:1px solid var(--line);
-  vertical-align:top}
-thead th{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--ink-faint);background:var(--surface)}
-tbody tr:last-child td{border-bottom:0}
-@media print{
-  :root{--paper:#fff;--ink:#000;--surface:#f4f4f4;--line:#bbb;--ink-soft:#333;--ink-faint:#555}
-  .nav{display:none}
-  a[href^="http"]::after{content:" (" attr(href) ")";font-size:.75em;color:#555}
-}
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f6f7fb; --bg-soft: #eef1f8; --bg-card: #ffffff;
+      --line: #d9dfec; --fg: #171d2b; --fg-dim: #56617a; --fg-faint: #7c869c;
+      --accent: #1f6feb; --accent-soft: #dbeafe;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: var(--font); line-height: 1.85; font-size: 16px;
+  }
+  .wrap { max-width: 44rem; margin: 0 auto; padding: 2.5rem 16px 5rem; }
+  header { border-bottom: 1px solid var(--line); padding-bottom: 1.5rem; margin-bottom: 2rem; }
+  .back { display: inline-flex; align-items: center; gap: .4em; color: var(--fg-dim); text-decoration: none; font-size: .9rem; }
+  .back:hover { color: var(--accent); }
+  h1 { font-size: 1.6rem; margin: 1rem 0 .4rem; text-wrap: balance; }
+  .meta { color: var(--fg-faint); font-size: .85rem; margin: 0; }
+  h2 {
+    font-size: 1.08rem; margin: 2.6rem 0 .8rem; padding-top: .6rem;
+    border-top: 1px solid var(--line); text-wrap: balance;
+  }
+  h2 .n { display: inline-block; min-width: 1.9em; color: var(--accent); font-variant-numeric: tabular-nums; font-weight: 600; }
+  p { margin: .7rem 0; }
+  ul { margin: .7rem 0; padding-left: 1.3em; }
+  li { margin: .35rem 0; }
+  a { color: var(--accent); }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .88em;
+    background: var(--bg-soft); border: 1px solid var(--line); border-radius: 6px; padding: .1em .38em;
+  }
+  .card { background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem 1.2rem; margin: 1.1rem 0; }
+  .card p:first-child { margin-top: 0; }
+  .card p:last-child { margin-bottom: 0; }
+  .callout { border-left: 3px solid var(--accent); background: var(--accent-soft); }
+  .heads-up { border-left: 3px solid var(--warn); }
+  footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line); color: var(--fg-faint); font-size: .85rem; }
+  footer a { color: var(--fg-dim); }
+  @media print { body { background: #fff; color: #000; } .back { display: none; } }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <nav class="nav">
-    <a href="./">ホーム</a>
-    <a href="./privacy.html">プライバシーポリシー</a>
-    <a href="./terms.html">利用規約</a>
-  </nav>
 
-  <p class="eyebrow">Terms of Service</p>
+<div class="card info" style="margin-bottom:2rem">
+  <p>
+    このページは <a href="https://xziax3mu4ixsf2rlwawmywp5kq0mhvvf.lambda-url.ap-northeast-1.on.aws/">SongSearch 本体</a>が配信しているものと
+    <strong>同一内容の写し</strong>です（Google の同意画面からの参照用）。
+    内容が食い違って見えた場合は本体側が正です。
+  </p>
+</div>
+
+<header>
+  <a class="back" href="https://xziax3mu4ixsf2rlwawmywp5kq0mhvvf.lambda-url.ap-northeast-1.on.aws/">← SongSearch をひらく</a>
   <h1>利用規約</h1>
-  <p class="lede">
-    SongSearchFromLibrary（以下「本アプリ」）の利用条件を定めます。
-  </p>
+  <p class="meta">最終更新: 2026年9月24日 ／ 発効: 2026年9月24日</p>
+</header>
 
-  <h2>1. 本アプリの位置づけ</h2>
+<p>
+  この規約は、SongSearch（以下「本サービス」）の利用条件を定めるものです。
+  本サービスを利用した時点で、この規約に同意したものとみなします。
+</p>
+
+<h2><span class="n">1</span>本サービスの内容</h2>
+<p>
+  本サービスは、利用者が自身の Google アカウントで YouTube に付けた
+  <strong>高評価および再生リスト</strong>の範囲に限って、うろ覚えの歌詞の断片から曲を探す検索機能を提供します。
+  検索の対象は利用者自身のリストであり、YouTube 全体ではありません。
+</p>
+
+<h2><span class="n">2</span>アカウントと認証</h2>
+<ul>
+  <li>本サービスはパスワードを持ちません。本人確認は Google アカウントの連携のみで行います。</li>
+  <li>利用者は、自身が正当な利用権限を持つアカウントのみを連携してください。</li>
+  <li>連携はいつでも
+      <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer">Google アカウントの設定</a>
+      から取り消せます。</li>
+</ul>
+
+<h2><span class="n">3</span>禁止事項</h2>
+<ul>
+  <li>他人のアカウントを無断で連携する行為</li>
+  <li>自動化された手段による大量アクセス、スクレイピング、負荷試験の類</li>
+  <li>本サービスの認証・利用制限を迂回しようとする行為</li>
+  <li>本サービスを通じて取得した情報を、権利者の許諾なく再配布する行為</li>
+  <li>法令または公序良俗に反する行為</li>
+</ul>
+<p>
+  本サービスには、費用の発生する操作（サインイン手続き、リストの更新、不具合報告）に
+  回数制限を設けています。制限に達した場合は一時的に応答が拒否されます。
+</p>
+
+<h2><span class="n">4</span>歌詞と著作権</h2>
+<div class="card callout">
   <p>
-    本アプリは作者が個人で開発・運用するツールです。現在は限定公開で、
-    作者およびアクセスを許可された利用者のみが利用できます。現時点で利用料は
-    発生しません。有料での提供を開始する場合は、事前に本規約を改定します。
+    <strong>本サービスは歌詞を表示しません。</strong>歌詞は検索の索引を作るためにのみ用い、
+    歌詞の本文、一致した行、その前後の行のいずれも画面に出しません。
+    検索結果に出るのは、曲名・アーティスト・サムネイルと、一致した理由の説明だけです。
   </p>
+</div>
+<p>
+  楽曲・歌詞・サムネイル等の著作権は、それぞれの権利者に帰属します。
+  本サービスはこれらの権利を主張しません。再生は YouTube / YouTube Music 上で行われ、
+  その利用にはそれぞれのサービスの規約が適用されます。
+</p>
 
-  <h2>2. 利用にあたって</h2>
-  <ul>
-    <li>本アプリの利用には Google アカウントの認可が必要です。</li>
-    <li>本アプリは読み取り専用の権限のみを要求し、アカウントへの書き込みは行いません。</li>
-    <li>認可はいつでも
-      <a href="https://myaccount.google.com/permissions">Google アカウントの設定</a>から取り消せます。</li>
-  </ul>
+<h2><span class="n">5</span>可用性</h2>
+<p>
+  本サービスは個人が運営しており、可用性を保証しません。
+  予告なく停止・中断・仕様変更を行う場合があります。
+  リストの同期は 1 日 1 回の自動実行に加え、画面からの手動更新で行えます。
+  同期の完了時刻を保証するものではありません。
+</p>
 
-  <h2>3. 禁止事項</h2>
-  <ul>
-    <li>他人の Google アカウントの資格情報を用いて本アプリを利用すること</li>
-    <li>本アプリを通じて取得した歌詞データを複製・再配布・販売すること</li>
-    <li>本アプリに対する不正アクセス、過負荷を与える行為</li>
-  </ul>
+<h2><span class="n">6</span>免責</h2>
+<ul>
+  <li>本サービスは現状有姿で提供され、検索結果の正確性・網羅性を保証しません。</li>
+  <li>本サービスの利用または利用不能によって生じた損害について、
+      運営者は故意または重過失がある場合を除き責任を負いません。</li>
+  <li>外部サービス（Google、YouTube、歌詞提供元）の仕様変更・停止に起因する不具合について、
+      運営者は責任を負いません。</li>
+</ul>
 
-  <h2>4. 歌詞データの取り扱い</h2>
+<h2><span class="n">7</span>料金</h2>
+<div class="card heads-up">
   <p>
-    本アプリが取得する歌詞は、検索用の索引を作る目的でのみ利用します。
-    歌詞の著作権は各権利者に帰属します。本アプリは歌詞データを再配布せず、
-    <strong>歌詞の本文を画面にも API の応答にも出しません</strong>。
-    検索結果として返すのは曲名・アーティスト名・アルバム名・アートワーク・
-    再生リンク、および「なぜ一致したか」の説明だけです。
+    <strong>現在、本サービスは無料です。</strong>将来的に有料プランを設ける予定がありますが、
+    課金を開始する場合は<strong>事前に告知</strong>し、既存の利用者に対して
+    黙って課金を始めることはしません。
   </p>
+</div>
 
-  <h2>5. 免責</h2>
-  <ul>
-    <li>本アプリは現状有姿で提供され、動作の継続性、検索結果の正確性、
-        可用性について、明示黙示を問わず一切の保証をしません。</li>
-    <li>本アプリの利用または利用不能から生じたいかなる損害についても、
-        作者は責任を負いません。</li>
-    <li>本アプリは外部サービス（YouTube、Google Gemini、LRCLIB などの歌詞提供元、および Amazon Web Services）に依存しており、
-        それらの仕様変更や停止により、予告なく機能が失われることがあります。</li>
-  </ul>
+<h2><span class="n">8</span>規約の変更</h2>
+<p>
+  本規約を変更する場合は、このページの「最終更新」を改めた上で掲示します。
+  利用者に不利益となる重要な変更を行う場合は、変更前に告知します。
+</p>
 
-  <h2>6. サービスの変更・終了</h2>
-  <p>作者は、予告なく本アプリの内容を変更し、または運用を終了することがあります。</p>
+<h2><span class="n">9</span>準拠法および管轄</h2>
+<p>
+  本規約は日本法に準拠します。本サービスに関して紛争が生じた場合、
+  運営者の住所地を管轄する日本の裁判所を第一審の専属的合意管轄裁判所とします。
+</p>
 
-  <h2>7. 準拠法</h2>
-  <p>本規約は日本法に準拠します。</p>
+<h2><span class="n">10</span>お問い合わせ</h2>
+<p>
+  本規約に関するお問い合わせは、<a href="https://xziax3mu4ixsf2rlwawmywp5kq0mhvvf.lambda-url.ap-northeast-1.on.aws/">本サービスの画面内にある問い合わせ・不具合報告フォーム</a>、または <a href="mailto:hashimoto7965@gmail.com">hashimoto7965@gmail.com</a>からお願いします。
+</p>
 
-  <h2>8. 連絡先</h2>
-  <p><a href="mailto:hashimoto7965@gmail.com">hashimoto7965@gmail.com</a></p>
+<footer>
+  <a href="https://xziax3mu4ixsf2rlwawmywp5kq0mhvvf.lambda-url.ap-northeast-1.on.aws/">SongSearch</a> ／ <a href="./privacy.html">プライバシーポリシー</a>
+</footer>
 
-  <div class="meta">
-    <p>
-      本アプリは YouTube API サービスを利用しています。利用者は
-      <a href="https://www.youtube.com/t/terms">YouTube 利用規約</a>にも同意したものとみなされます。
-    </p>
-    <p>制定: 2026-09-11 ／ 最終更新: 2026-09-16</p>
-  </div>
 </div>
 </body>
 </html>

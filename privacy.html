@@ -1,253 +1,298 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="SongSearchFromLibrary のプライバシーポリシー。取得する Google ユーザーデータ、その用途、保存場所、第三者提供の有無、削除方法。">
-<title>プライバシーポリシー — SongSearchFromLibrary</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<meta name="referrer" content="no-referrer">
+<title>プライバシーポリシー — SongSearch</title>
+<!--
+  WHY THIS PAGE IS PART OF THE APPLICATION AND NOT A DOCUMENT SOMEWHERE
+
+  Google's sensitive-scope verification requires a privacy policy hosted on
+  the same verified domain as the app, linked from the OAuth consent screen,
+  that names the Google user data the app touches and what happens to it.  A
+  policy in a repository, or in a doc, satisfies none of that.
+
+  EVERY FACTUAL CLAIM BELOW WAS READ OUT OF THE CODE, NOT COMPOSED
+
+    scopes            src/songsearch/ingest/auth_google.py SCOPES
+    what is stored    migrations/001_core.sql (user), the serve-copy redaction
+                      in songsearch.redact (secret_json -> NULL, email -> NULL)
+    encryption        infra/lambda/s3.tf, sse_algorithm = "AES256"
+    lyrics not shown  SSFL_SHOW_LYRICS=false on ssfl-search, verified live
+    cookies           songsearch.api.session, routes/auth.py (_OAUTH_COOKIE)
+    where reports go  songsearch.api.routes.feedback
+
+  If any of those change, this page is wrong and has to change with them.  A
+  privacy policy that has drifted from the code is worse than none: it is a
+  statement the operator has made and is not honouring.
+-->
 <style>
-:root{
-  color-scheme: light dark;
-  --paper:#fcfcfb; --surface:#f2f2ef; --ink:#16171a; --ink-soft:#4c5054;
-  --ink-faint:#74797e; --line:#e0e0dc; --accent:#2f6f4f; --accent-ink:#1e4d36;
-  --accent-bg:#e8f2ec;
-  --sans:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic Medium","Yu Gothic",
-    "Noto Sans JP",Meiryo,system-ui,-apple-system,"Segoe UI",sans-serif;
-  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Noto Sans Mono CJK JP",monospace;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --paper:#111214; --surface:#1a1c1f; --ink:#e7e9ea; --ink-soft:#aeb3b7;
-    --ink-faint:#848a8f; --line:#2a2d31; --accent:#5fb98c; --accent-ink:#8ed4ae;
-    --accent-bg:#15251e;
+  :root {
+    --bg: #10131a;
+    --bg-soft: #171b25;
+    --bg-card: #1b2130;
+    --line: #2a3346;
+    --fg: #e8ecf5;
+    --fg-dim: #9aa5bd;
+    --fg-faint: #6b7590;
+    --accent: #7cc4ff;
+    --accent-soft: #1d3a55;
+    --ok: #62d19a;
+    --warn: #ffc46b;
+    --radius: 14px;
+    --font: system-ui, -apple-system, "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+            "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
   }
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
-  font-size:16px;line-height:1.9;font-feature-settings:"palt" 1;
-  -webkit-font-smoothing:antialiased}
-.wrap{max-width:44rem;margin:0 auto;padding:3rem 1.25rem 5rem}
-a{color:var(--accent-ink);text-underline-offset:.18em}
-a:hover{color:var(--accent)}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--accent);margin:0 0 .7rem}
-h1{font-size:clamp(1.6rem,4vw,2.15rem);line-height:1.4;margin:0 0 .5rem;
-  letter-spacing:.01em;text-wrap:balance}
-h2{font-size:1.1rem;margin:2.5rem 0 .3rem;padding-top:1.4rem;
-  border-top:1px solid var(--line);text-wrap:balance}
-h3{font-size:.95rem;margin:1.6rem 0 .2rem}
-p,li{text-wrap:pretty}
-.lede{font-size:1.05rem;color:var(--ink-soft);margin:0 0 1.5rem}
-ul,ol{padding-left:1.3rem}
-code{font-family:var(--mono);font-size:.85em;background:var(--surface);
-  padding:.12em .38em;border-radius:3px;word-break:break-word}
-.box{background:var(--accent-bg);border-left:3px solid var(--accent);
-  padding:.85rem 1.1rem;margin:1.4rem 0;border-radius:0 3px 3px 0;font-size:.95rem}
-.box>:first-child{margin-top:0}.box>:last-child{margin-bottom:0}
-.meta{font-size:.85rem;color:var(--ink-faint);border-top:1px solid var(--line);
-  margin-top:3rem;padding-top:1.2rem}
-.nav{display:flex;flex-wrap:wrap;gap:1.1rem;font-size:.875rem;
-  padding-bottom:1.3rem;margin-bottom:1.6rem;border-bottom:1px solid var(--line)}
-.tw{overflow-x:auto;margin:1.2rem 0;border:1px solid var(--line);border-radius:4px}
-table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:26rem}
-th,td{text-align:left;padding:.55rem .8rem;border-bottom:1px solid var(--line);
-  vertical-align:top}
-thead th{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--ink-faint);background:var(--surface)}
-tbody tr:last-child td{border-bottom:0}
-@media print{
-  :root{--paper:#fff;--ink:#000;--surface:#f4f4f4;--line:#bbb;--ink-soft:#333;--ink-faint:#555}
-  .nav{display:none}
-  a[href^="http"]::after{content:" (" attr(href) ")";font-size:.75em;color:#555}
-}
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f6f7fb; --bg-soft: #eef1f8; --bg-card: #ffffff;
+      --line: #d9dfec; --fg: #171d2b; --fg-dim: #56617a; --fg-faint: #7c869c;
+      --accent: #1f6feb; --accent-soft: #dbeafe;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font);
+    line-height: 1.85;
+    font-size: 16px;
+  }
+  .wrap { max-width: 44rem; margin: 0 auto; padding: 2.5rem 16px 5rem; }
+  header { border-bottom: 1px solid var(--line); padding-bottom: 1.5rem; margin-bottom: 2rem; }
+  .back {
+    display: inline-flex; align-items: center; gap: .4em;
+    color: var(--fg-dim); text-decoration: none; font-size: .9rem;
+  }
+  .back:hover { color: var(--accent); }
+  h1 { font-size: 1.6rem; margin: 1rem 0 .4rem; text-wrap: balance; letter-spacing: .01em; }
+  .meta { color: var(--fg-faint); font-size: .85rem; margin: 0; }
+  h2 {
+    font-size: 1.08rem; margin: 2.6rem 0 .8rem; padding-top: .6rem;
+    border-top: 1px solid var(--line); text-wrap: balance;
+  }
+  h2 .n {
+    display: inline-block; min-width: 1.7em; color: var(--accent);
+    font-variant-numeric: tabular-nums; font-weight: 600;
+  }
+  h3 { font-size: .95rem; margin: 1.6rem 0 .4rem; color: var(--fg-dim); }
+  p { margin: .7rem 0; }
+  ul { margin: .7rem 0; padding-left: 1.3em; }
+  li { margin: .35rem 0; }
+  a { color: var(--accent); }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: .88em; background: var(--bg-soft); border: 1px solid var(--line);
+    border-radius: 6px; padding: .1em .38em; word-break: break-all;
+  }
+  .card {
+    background: var(--bg-card); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 1rem 1.2rem; margin: 1.1rem 0;
+  }
+  .card p:first-child { margin-top: 0; }
+  .card p:last-child { margin-bottom: 0; }
+  .callout { border-left: 3px solid var(--accent); background: var(--accent-soft); }
+  @media (prefers-color-scheme: light) { .callout { background: var(--accent-soft); } }
+  .callout strong { color: inherit; }
+  .no { border-left: 3px solid var(--ok); }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .92rem; }
+  .scroll { overflow-x: auto; }
+  th, td { text-align: left; padding: .55rem .7rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--fg-dim); font-weight: 600; white-space: nowrap; }
+  td code { white-space: nowrap; }
+  footer {
+    margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
+    color: var(--fg-faint); font-size: .85rem;
+  }
+  footer a { color: var(--fg-dim); }
+  @media print {
+    body { background: #fff; color: #000; }
+    .back { display: none; }
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <nav class="nav">
-    <a href="./">ホーム</a>
-    <a href="./privacy.html">プライバシーポリシー</a>
-    <a href="./terms.html">利用規約</a>
-  </nav>
 
-  <p class="eyebrow">Privacy Policy</p>
+<div class="card info" style="margin-bottom:2rem">
+  <p>
+    このページは <a href="https://xziax3mu4ixsf2rlwawmywp5kq0mhvvf.lambda-url.ap-northeast-1.on.aws/">SongSearch 本体</a>が配信しているものと
+    <strong>同一内容の写し</strong>です（Google の同意画面からの参照用）。
+    内容が食い違って見えた場合は本体側が正です。
+  </p>
+</div>
+
+<header>
+  <a class="back" href="https://xziax3mu4ixsf2rlwawmywp5kq0mhvvf.lambda-url.ap-northeast-1.on.aws/">← SongSearch をひらく</a>
   <h1>プライバシーポリシー</h1>
-  <p class="lede">
-    SongSearchFromLibrary（以下「本アプリ」）が取り扱う情報について説明します。
-    本アプリは作者が個人で開発・運用しているツールです。現在は限定公開で、作者およびアクセスを許可された利用者のみが利用できます。
-  </p>
+  <p class="meta">最終更新: 2026年9月24日 ／ 発効: 2026年9月24日</p>
+</header>
 
-  <h2>1. 要求する権限（OAuth スコープ）</h2>
-  <p>本アプリが要求する Google の権限は、次の 3 つです。</p>
-  <div class="tw">
-    <table>
-      <thead><tr><th>スコープ</th><th>何に使うか</th></tr></thead>
-      <tbody>
-        <tr>
-          <td><code>https://www.googleapis.com/auth/youtube.readonly</code></td>
-          <td>利用者本人の高評価リストとプレイリストを読み取り、検索索引を作るため</td>
-        </tr>
-        <tr>
-          <td><code>openid</code></td>
-          <td>次回ログイン時に同じ利用者だと判別するため。Google が発行する識別子
-              (<code>sub</code>) を受け取ります</td>
-        </tr>
-        <tr>
-          <td><code>https://www.googleapis.com/auth/userinfo.email</code></td>
-          <td>アカウントの識別と問い合わせ対応のため。メールアドレスを受け取ります</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="box">
-    <p>
-      いずれも<strong>読み取り専用</strong>の権限です。本アプリは YouTube Data API v3 に対して
-      GET リクエストのみを発行し、利用者のアカウントへの書き込み（高評価の付け外し、
-      プレイリストの編集、動画の投稿、再生履歴の変更）は行いません。
-    </p>
-    <p>
-      本アプリはパスワードを一切保存しません。ログインは Google などの
-      外部アカウントとの連携のみで行います。
-    </p>
-  </div>
+<p>
+  SongSearch（以下「本サービス」）は、利用者が <strong>自分の YouTube の高評価リスト</strong> の中から、
+  うろ覚えの歌詞で曲を探すためのサービスです。本サービスが Google アカウントから受け取る情報は、
+  その検索を成立させるために必要な範囲に限られます。このページは、何を受け取り、何に使い、
+  どこに置き、どうすれば消せるのかを述べます。
+</p>
 
-  <h2>2. 取得する情報</h2>
-  <p>上記の権限を用いて、利用者本人について次の情報を読み取ります。</p>
-  <div class="tw">
-    <table>
-      <thead><tr><th>情報</th><th>取得元</th><th>用途</th></tr></thead>
-      <tbody>
-        <tr><td>高く評価した動画・曲の一覧</td><td>YouTube Data API v3</td><td>検索対象の決定</td></tr>
-        <tr><td>プレイリストとその収録曲</td><td>同上</td><td>検索範囲の絞り込み</td></tr>
-        <tr><td>曲名・アーティスト名・アルバム名・動画 ID・再生時間・サムネイル URL</td><td>同上</td><td>検索索引の作成と結果表示</td></tr>
-        <tr><td>チャンネル情報（高評価プレイリストの ID 取得のため）</td><td>同上</td><td>上記の取得に必要</td></tr>
-        <tr><td>Google が発行する識別子 (<code>sub</code>)</td><td>OpenID Connect の ID トークン</td><td>再訪時に同一利用者と判別するため</td></tr>
-        <tr><td>メールアドレスと確認済みフラグ、表示名、プロフィール画像 URL</td><td>同上</td><td>アカウントの表示と問い合わせ対応</td></tr>
-      </tbody>
-    </table>
-  </div>
+<div class="card callout">
   <p>
-    本アプリは、Gmail、連絡先、カレンダー、位置情報、支払い情報など、
-    上記以外の Google ユーザーデータには一切アクセスしません。
+    <strong>先に結論。</strong>本サービスは、利用者のデータを広告に使いません。第三者に販売・提供しません。
+    解析ツールやトラッキング Cookie を置いていません。歌詞を画面に表示しません。
   </p>
+</div>
+
+<h2><span class="n">1</span>取得する情報</h2>
+
+<h3>Google アカウントから</h3>
+<p>サインイン時に、次の 3 つの権限（スコープ）への同意をお願いします。これがすべてで、他は要求しません。</p>
+
+<div class="scroll">
+<table>
+  <thead>
+    <tr><th>スコープ</th><th>取得するもの</th><th>なぜ必要か</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>openid</code></td>
+      <td>Google アカウントの識別子</td>
+      <td>「どのアカウントか」を一意に決めるため。パスワードは本サービスが持ちません</td>
+    </tr>
+    <tr>
+      <td><code>userinfo.email</code></td>
+      <td>メールアドレス</td>
+      <td>アカウントの取り違えを検出するため</td>
+    </tr>
+    <tr>
+      <td><code>youtube.readonly</code></td>
+      <td>高評価した動画と再生リストの一覧、および各動画のタイトル・チャンネル名・動画 ID・サムネイル URL・再生時間</td>
+      <td>検索の対象を「あなたのリスト」に限るため。これが本サービスの中心機能です</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="card no">
   <p>
-    <strong>メールアドレスをアカウントの照合に使うことはありません。</strong>
-    別の外部サービスのアカウントを同じ利用者に紐付けるのは、本人がログイン中に
-    明示的に連携操作を行った場合だけです。提供元が主張するメールアドレスの一致を
-    根拠に自動で紐付けることは、設計上できないようにしています。
+    <strong>取得しないもの。</strong><code>youtube.readonly</code> は<strong>読み取り専用</strong>です。
+    本サービスは、動画の投稿・削除・評価の変更・コメント・チャンネルの管理を行えません。
+    視聴履歴、購読チャンネル、限定公開・非公開動画、支払い情報にもアクセスしません。
   </p>
+</div>
 
-  <h2>3. 情報の利用目的</h2>
+<h3>利用者が自分で入力するもの</h3>
+<p>
+  検索語と、不具合報告フォームに書いた本文です。検索語はその場の検索に使うだけで、
+  検索履歴として保存していません。報告フォームは、書かれた本文と
+  「誰が・どの索引で・どのバージョンで」だけを送ります。
+  <strong>直前の検索語は同送しません</strong> — 不具合を報告した人が検索履歴の提出に同意したわけではないからです。
+</p>
+
+<h2><span class="n">2</span>歌詞の扱い</h2>
+<p>
+  曲を歌詞の断片から探すために、本サービスは外部の歌詞提供元（LRCLIB、YouTube Music）から歌詞を取得し、
+  <strong>検索用の索引を作るためだけ</strong>に使います。
+</p>
+<div class="card callout">
   <p>
-    取得した情報は、<strong>利用者自身が自分の楽曲を検索できるようにすること</strong>のみに使用します。
-    広告、プロファイリング、行動分析、機械学習モデルの訓練には使用しません。
+    <strong>歌詞そのものは画面に表示しません。</strong>検索結果が示すのは、曲名・アーティスト・サムネイルと、
+    「歌詞の読みがほぼ一致しました」のような<em>一致した理由</em>だけです。歌詞の本文・一致した行・
+    その前後の行は、いずれも返しません。これは設定値ではなく運用方針で、本番環境で
+    <code>SSFL_SHOW_LYRICS=false</code> として固定されています。
   </p>
+</div>
+<p>
+  歌詞は利用者ごとのデータではなく、全利用者で共有する索引です。誰かが曲を追加したことで作られた索引は、
+  同じ曲を持つ他の利用者にも使われます。索引から分かるのは「その曲が検索に当たるかどうか」だけで、
+  誰のリストに入っているかは索引には含まれません。
+</p>
 
-  <h2>4. 保存場所と保存期間</h2>
-  <p>
-    取得した情報は、作者が管理する Amazon Web Services のアカウント
-    （東京リージョン ap-northeast-1）上の SQLite データベースファイルに保存されます。
-    第三者のデータベースサービスには保存しません。
-  </p>
-  <ul>
-    <li>保管先の S3 バケットは公開アクセスを全面的に遮断し、保存時暗号化 (SSE-S3) と
-        TLS 必須のポリシーを設定しています。</li>
-    <li>Google の更新トークンは利用者ごとに分離したディレクトリへ、
-        パーミッション 0600 のファイルとして保管します。公開リポジトリには含めません。</li>
-    <li>検索を提供する側が読む<strong>配信用コピーからは、更新トークンとメールアドレスを
-        削除してから配信します</strong>。検索処理はこれらに触れません。</li>
-    <li>ログイン状態は署名付き Cookie で保持します。Cookie に含まれるのは利用者番号、
-        失効判定用の世代番号、発行時刻と有効期限だけで、氏名やメールアドレスは含みません。</li>
-  </ul>
-  <p>
-    アクセス権を取り消し、作者に削除を依頼すれば、保存された情報は削除されます。
-  </p>
+<h2><span class="n">3</span>保存場所と保護</h2>
+<ul>
+  <li>保存先は <strong>Amazon Web Services の東京リージョン（ap-northeast-1）</strong> です。</li>
+  <li>保存されるデータは、S3 のサーバー側暗号化（AES-256）で暗号化された状態で置かれます。</li>
+  <li>Google の更新トークン（refresh token）は、<strong>利用者ごとに分離したディレクトリ</strong>に保存されます。
+      他の利用者のトークンを読めない構造です。</li>
+  <li>検索機能が読むデータベースは、元のデータベースの<strong>複製</strong>です。
+      複製を作る際に <strong>更新トークンとメールアドレスを削除</strong>しています
+      — 検索機能はインターネットに面しているので、そこに置く必要のないものは置かない、という考え方です。</li>
+  <li>サインイン状態は、署名付きの Cookie で保持します。サーバー側にセッションの一覧は持ちません。</li>
+</ul>
 
-  <h2>5. 外部サービスへの送信</h2>
-  <p>本アプリは、機能の実現のために次の外部サービスと通信します。送信する内容を明示します。</p>
-  <div class="tw">
-    <table>
-      <thead><tr><th>送信先</th><th>送信する内容</th><th>目的</th></tr></thead>
-      <tbody>
-        <tr>
-          <td>Google Gemini API</td>
-          <td>曲名、チャンネル名、再生時間、カテゴリ ID などの<strong>公開メタデータ</strong></td>
-          <td>その項目が楽曲か否か（音楽以外の動画の混入）の判定。動画本体や音声、利用者の識別情報は送信しません</td>
-        </tr>
-        <tr>
-          <td>YouTube Music（未認証）</td>
-          <td>動画 ID</td>
-          <td>歌詞の取得。この通信に利用者の認証情報は使用しません</td>
-        </tr>
-        <tr>
-          <td>LRCLIB（任意・無効化可能）</td>
-          <td>曲名、アーティスト名、再生時間</td>
-          <td>YouTube Music に歌詞が無い曲の補完</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <p>
-    これらへの送信は、いずれも設定で無効にできます。
-    取得した Google ユーザーデータを、広告事業者を含むいかなる第三者にも
-    <strong>販売・貸与・提供しません</strong>。
-  </p>
+<h3>Cookie</h3>
+<div class="scroll">
+<table>
+  <thead><tr><th>名前</th><th>役目</th><th>期間</th></tr></thead>
+  <tbody>
+    <tr><td><code>ssfl_session</code></td><td>サインイン状態の保持。HttpOnly / Secure / SameSite=Lax</td><td>30 日</td></tr>
+    <tr><td><code>ssfl_oauth</code></td><td>サインイン手続きの途中でのみ使う一時的な値。なりすまし防止</td><td>15 分</td></tr>
+  </tbody>
+</table>
+</div>
+<p>広告・行動追跡・アクセス解析のための Cookie は使っていません。第三者のスクリプトも読み込んでいません。</p>
 
-  <h2>5-2. 歌詞の取り扱い</h2>
-  <p>
-    本アプリは歌詞を取得しますが、<strong>歌詞の本文を画面にも API の応答にも出しません</strong>。
-    歌詞は検索の索引を作るためだけに使い、検索結果として返すのは曲名・アーティスト名・
-    アルバム名・アートワーク・再生リンク、および「なぜ一致したか」の説明だけです。
-  </p>
-  <p>
-    この抑制はサーバー側で行っています。画面上で隠すだけでは、開発者ツールを開けば
-    見えてしまうためです。
-  </p>
+<h2><span class="n">4</span>第三者への提供</h2>
+<p>本サービスは、利用者のデータを第三者に販売・貸与・提供しません。通信が外部に出るのは次の場合だけです。</p>
+<ul>
+  <li><strong>Google</strong> — リストの同期（YouTube Data API）と、サインイン。</li>
+  <li><strong>LRCLIB / YouTube Music</strong> — 歌詞の取得。曲の情報のみを送り、利用者を特定する情報は送りません。</li>
+  <li><strong>Slack</strong> — 運営者への障害通知と、不具合報告フォームの転送先。運営者本人しか読めない場所です。</li>
+</ul>
+<p>
+  Google から受け取った情報の利用は、
+  <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer">Google API Services User Data Policy</a>
+  に従います。<strong>Limited Use</strong> の要件を含め、上記に述べた目的以外には使いません。
+  特に、広告目的での利用、人手による閲覧（法令上の要請・セキュリティ調査・利用者本人の明示的な同意がある場合を除く）、
+  第三者への譲渡は行いません。
+</p>
 
-  <h2>6. Google API サービスのユーザーデータに関するポリシー</h2>
-  <p>
-    本アプリによる Google API から受け取った情報の利用および他者への転送は、
-    <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API サービスのユーザーデータに関するポリシー</a>
-    （限定的使用の要件を含む）を遵守します。
-  </p>
+<h2><span class="n">5</span>連携の解除とデータの削除</h2>
+<ul>
+  <li>
+    <strong>Google 側から解除する</strong> —
+    <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer">Google アカウントの「サードパーティ製アプリとサービス」</a>
+    から本サービスへのアクセス権を取り消せます。取り消した時点で、本サービスは以後あなたのリストを読めなくなります。
+  </li>
+  <li>
+    <strong>保存済みデータの削除を依頼する</strong> — アプリ内の問い合わせフォームから削除を依頼してください。
+    削除の対象は、あなたのアカウント情報・更新トークン・あなたのリストの内容です。
+    曲と歌詞の索引は全利用者で共有しているため残りますが、そこにあなたを示す情報は含まれません。
+  </li>
+</ul>
 
-  <h2>7. アクセス権の取り消しとデータの削除</h2>
-  <ol>
-    <li>
-      <a href="https://myaccount.google.com/permissions">Google アカウントの「サードパーティ製のアプリとサービス」</a>
-      から本アプリを削除すると、以後のアクセスは停止します。
-    </li>
-    <li>
-      保存済みの情報の削除は、下記の連絡先に依頼してください。
-      更新トークンと、当該利用者について取得したデータを削除します。
-    </li>
-  </ol>
+<h2><span class="n">6</span>保存期間</h2>
+<p>
+  リストと曲の情報は、連携が続いている間、最新の状態に保たれます（1 日 1 回の自動同期、および手動更新）。
+  削除依頼を受けた場合、および連携が取り消されて更新トークンが無効になった場合は、
+  当該利用者のデータを削除します。
+</p>
 
-  <h2>8. セキュリティ</h2>
-  <p>
-    認証トークンはサーバー上でパーミッション 0600 のファイルとして保管し、
-    公開リポジトリには一切含めません。Web インターフェースへのアクセスは
-    TLS で暗号化し、共有シークレットによる認証を必須としています。
-  </p>
+<h2><span class="n">7</span>子どもの利用</h2>
+<p>
+  本サービスは、13 歳未満の方の利用を想定していません。13 歳未満の方の情報を意図的に取得することはありません。
+</p>
 
-  <h2>9. 子どもの利用</h2>
-  <p>本アプリは 13 歳未満の子どもの利用を想定しておらず、子どもから意図的に情報を収集することはありません。</p>
+<h2><span class="n">8</span>本ポリシーの変更</h2>
+<p>
+  内容を変更する場合は、このページの「最終更新」を改めた上で掲示します。
+  取得する情報の範囲や利用目的を実質的に広げる変更を行う場合は、変更前に告知します。
+</p>
 
-  <h2>10. 変更</h2>
-  <p>本ポリシーを変更した場合は、このページを更新し、末尾の更新日を改めます。</p>
+<h2><span class="n">9</span>お問い合わせ</h2>
+<p>
+  本ポリシーおよび個人情報の取り扱いに関するお問い合わせ、削除のご依頼は、
+  <a href="https://xziax3mu4ixsf2rlwawmywp5kq0mhvvf.lambda-url.ap-northeast-1.on.aws/">本サービスの画面内にある問い合わせ・不具合報告フォーム</a>、または <a href="mailto:hashimoto7965@gmail.com">hashimoto7965@gmail.com</a>からお願いします。
+  運営者に直接届きます。
+</p>
 
-  <h2>11. 連絡先</h2>
-  <p><a href="mailto:hashimoto7965@gmail.com">hashimoto7965@gmail.com</a></p>
+<footer>
+  <a href="https://xziax3mu4ixsf2rlwawmywp5kq0mhvvf.lambda-url.ap-northeast-1.on.aws/">SongSearch</a> ／ <a href="./terms.html">利用規約</a>
+</footer>
 
-  <div class="meta">
-    <p>
-      本アプリは YouTube API サービスを利用しています。
-      <a href="https://www.youtube.com/t/terms">YouTube 利用規約</a>／
-      <a href="https://policies.google.com/privacy">Google プライバシーポリシー</a>
-    </p>
-    <p>制定: 2026-09-11 ／ 最終更新: 2026-09-16</p>
-  </div>
 </div>
 </body>
 </html>
