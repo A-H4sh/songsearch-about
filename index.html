@@ -1,133 +1,181 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="自分が YouTube Music で高く評価した曲を、うろ覚えの歌詞から探し出すツール。">
-<title>SongSearchFromLibrary</title>
+<meta name="color-scheme" content="dark light">
+<meta name="description" content="SongSearch — 自分が YouTube で高評価した曲だけを対象に、うろ覚えの歌詞から曲を探すサービス。読み取り専用、歌詞は表示しません。">
+<title>SongSearch — 高評価から歌詞で探す</title>
+<!--
+  THE HOMEPAGE GOOGLE FETCHES DURING VERIFICATION.
+
+  It replaces a 2026-09-11 page that said 「公開サービスではありません。作者
+  個人が自分のアカウントに対して使うツールです」 and 「要求する権限は
+  youtube.readonly の 1 つだけ」.  Both had stopped being true -- the first on
+  2026-09-24 when public_access went on, the second on 2026-09-16 when SCOPES
+  gained openid and userinfo.email.  Submitting a sensitive-scope application
+  while the homepage says the app is not a public service is a rejection, and
+  more to the point it was simply false.
+
+  Styled like web/privacy.html and web/terms.html, which are generated from
+  the application's own pages, so the three pages of this site look like one
+  site and like the product.
+
+  KEEP IT TRUE.  tests/test_branding_sync.py asserts this page names every
+  entry in SCOPES and no longer calls the service private.
+-->
 <style>
-:root{
-  color-scheme: light dark;
-  --paper:#fcfcfb; --surface:#f2f2ef; --ink:#16171a; --ink-soft:#4c5054;
-  --ink-faint:#74797e; --line:#e0e0dc; --accent:#2f6f4f; --accent-ink:#1e4d36;
-  --accent-bg:#e8f2ec;
-  --sans:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic Medium","Yu Gothic",
-    "Noto Sans JP",Meiryo,system-ui,-apple-system,"Segoe UI",sans-serif;
-  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Noto Sans Mono CJK JP",monospace;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --paper:#111214; --surface:#1a1c1f; --ink:#e7e9ea; --ink-soft:#aeb3b7;
-    --ink-faint:#848a8f; --line:#2a2d31; --accent:#5fb98c; --accent-ink:#8ed4ae;
-    --accent-bg:#15251e;
+  :root {
+    --bg:#10131a; --bg-soft:#171b25; --bg-card:#1b2130; --line:#2a3346;
+    --fg:#e8ecf5; --fg-dim:#9aa5bd; --fg-faint:#6b7590;
+    --accent:#7cc4ff; --accent-soft:#1d3a55; --ok:#62d19a; --warn:#ffc46b;
+    --radius:14px;
+    --font: system-ui,-apple-system,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic","Meiryo",sans-serif;
+    --mono: ui-monospace,SFMono-Regular,Menlo,monospace;
   }
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
-  font-size:16px;line-height:1.9;font-feature-settings:"palt" 1;
-  -webkit-font-smoothing:antialiased}
-.wrap{max-width:44rem;margin:0 auto;padding:3rem 1.25rem 5rem}
-a{color:var(--accent-ink);text-underline-offset:.18em}
-a:hover{color:var(--accent)}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--accent);margin:0 0 .7rem}
-h1{font-size:clamp(1.6rem,4vw,2.15rem);line-height:1.4;margin:0 0 .5rem;
-  letter-spacing:.01em;text-wrap:balance}
-h2{font-size:1.1rem;margin:2.5rem 0 .3rem;padding-top:1.4rem;
-  border-top:1px solid var(--line);text-wrap:balance}
-h3{font-size:.95rem;margin:1.6rem 0 .2rem}
-p,li{text-wrap:pretty}
-.lede{font-size:1.05rem;color:var(--ink-soft);margin:0 0 1.5rem}
-ul,ol{padding-left:1.3rem}
-code{font-family:var(--mono);font-size:.85em;background:var(--surface);
-  padding:.12em .38em;border-radius:3px;word-break:break-word}
-.box{background:var(--accent-bg);border-left:3px solid var(--accent);
-  padding:.85rem 1.1rem;margin:1.4rem 0;border-radius:0 3px 3px 0;font-size:.95rem}
-.box>:first-child{margin-top:0}.box>:last-child{margin-bottom:0}
-.meta{font-size:.85rem;color:var(--ink-faint);border-top:1px solid var(--line);
-  margin-top:3rem;padding-top:1.2rem}
-.nav{display:flex;flex-wrap:wrap;gap:1.1rem;font-size:.875rem;
-  padding-bottom:1.3rem;margin-bottom:1.6rem;border-bottom:1px solid var(--line)}
-.tw{overflow-x:auto;margin:1.2rem 0;border:1px solid var(--line);border-radius:4px}
-table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:26rem}
-th,td{text-align:left;padding:.55rem .8rem;border-bottom:1px solid var(--line);
-  vertical-align:top}
-thead th{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--ink-faint);background:var(--surface)}
-tbody tr:last-child td{border-bottom:0}
-@media print{
-  :root{--paper:#fff;--ink:#000;--surface:#f4f4f4;--line:#bbb;--ink-soft:#333;--ink-faint:#555}
-  .nav{display:none}
-  a[href^="http"]::after{content:" (" attr(href) ")";font-size:.75em;color:#555}
-}
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg:#f6f7fb; --bg-soft:#eef1f8; --bg-card:#fff; --line:#d9dfec;
+      --fg:#171d2b; --fg-dim:#56617a; --fg-faint:#7c869c;
+      --accent:#1f6feb; --accent-soft:#e4efff;
+    }
+  }
+  * { box-sizing:border-box; }
+  html { -webkit-text-size-adjust:100%; }
+  body { margin:0; background:var(--bg); color:var(--fg); font-family:var(--font); line-height:1.85; font-size:16px; }
+  .wrap { max-width:44rem; margin:0 auto; padding:2.5rem 16px 5rem; }
+  nav { display:flex; gap:1.2rem; font-size:.85rem; padding-bottom:1.4rem; border-bottom:1px solid var(--line); }
+  nav a { color:var(--fg-dim); text-decoration:none; }
+  nav a[aria-current] { color:var(--fg); font-weight:600; }
+  nav a:hover { color:var(--accent); }
+  h1 { font-size:1.8rem; margin:1.8rem 0 .3rem; text-wrap:balance; letter-spacing:.01em; }
+  .lede { color:var(--fg-dim); font-size:1.02rem; margin:.3rem 0 1.6rem; text-wrap:balance; }
+  h2 { font-size:1.1rem; margin:2.6rem 0 .8rem; padding-top:.6rem; border-top:1px solid var(--line); text-wrap:balance; }
+  p { margin:.7rem 0; }
+  ul { margin:.7rem 0; padding-left:1.3em; }
+  li { margin:.35rem 0; }
+  a { color:var(--accent); }
+  code { font-family:var(--mono); font-size:.88em; background:var(--bg-soft); border:1px solid var(--line); border-radius:6px; padding:.1em .38em; word-break:break-all; }
+  .card { background:var(--bg-card); border:1px solid var(--line); border-radius:var(--radius); padding:1rem 1.2rem; margin:1.1rem 0; }
+  .card > :first-child { margin-top:0; } .card > :last-child { margin-bottom:0; }
+  .callout { border-left:3px solid var(--accent); background:var(--accent-soft); }
+  .heads-up { border-left:3px solid var(--warn); }
+  .cta {
+    display:inline-block; margin:1.4rem 0 .2rem; padding:.62em 1.5em;
+    background:var(--accent); color:var(--bg); border-radius:999px;
+    text-decoration:none; font-weight:600; font-size:.98rem;
+  }
+  .cta:hover { filter:brightness(1.08); }
+  .scroll { overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; margin:1rem 0; font-size:.92rem; }
+  th,td { text-align:left; padding:.55rem .7rem; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--fg-dim); font-weight:600; white-space:nowrap; }
+  footer { margin-top:3.5rem; padding-top:1.5rem; border-top:1px solid var(--line); color:var(--fg-faint); font-size:.85rem; }
+  footer a { color:var(--fg-dim); }
+  @media print { body { background:#fff; color:#000; } }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <nav class="nav">
-    <a href="./">ホーム</a>
-    <a href="./privacy.html">プライバシーポリシー</a>
-    <a href="./terms.html">利用規約</a>
-  </nav>
 
-  <p class="eyebrow">Personal tool</p>
-  <h1>SongSearchFromLibrary</h1>
-  <p class="lede">
-    自分が YouTube Music で高く評価した曲を、<strong>うろ覚えの歌詞から</strong>探し出すための
-    ツールです。作者が個人で開発・運用しています。
-  </p>
+<nav>
+  <a href="./" aria-current="page">ホーム</a>
+  <a href="./privacy.html">プライバシーポリシー</a>
+  <a href="./terms.html">利用規約</a>
+</nav>
 
-  <h2>解決したい問題</h2>
+<h1>SongSearch</h1>
+<p class="lede">
+  「昔いいねした、あの曲。歌詞の一部しか思い出せない」——
+  自分が YouTube で高評価した曲だけを対象に、うろ覚えの断片から探し出します。
+</p>
+
+<a class="cta" href="https://xziax3mu4ixsf2rlwawmywp5kq0mhvvf.lambda-url.ap-northeast-1.on.aws/">SongSearch をひらく</a>
+
+<h2>何ができるか</h2>
+<p>
+  検索範囲は <strong>あなた自身の高評価リストと再生リスト</strong>です。YouTube 全体ではありません。
+  「聴いたことがあるのは確かなのに名前が出てこない」という状態に効きます。
+</p>
+<ul>
+  <li>歌詞の一部（歌いだしなど）での部分一致</li>
+  <li><strong>ひらがなだけ</strong>、<strong>ローマ字だけ</strong>の入力</li>
+  <li>漢字の誤り、送り仮名や濁点の違い</li>
+  <li>曲名とアーティスト名の組み合わせ</li>
+  <li>「たぶんこんな感じの曲」という雰囲気での検索</li>
+</ul>
+
+<h2>使うには</h2>
+<p>
+  Google アカウントでサインインすると、あなたの高評価リストが検索対象になります。
+  パスワードは設定しません。本人確認は Google の連携だけで行います。
+</p>
+
+<div class="card heads-up">
   <p>
-    「昔 YouTube Music で聴いて、いいねもした。でもタイトルが思い出せない」——
-    そんなときに、覚えている歌詞の断片から曲を特定します。
-    記憶違いがあっても見つかることを目標にしています。
+    <strong>いまは同意画面に「確認されていないアプリ」という警告が出ます。</strong>
+    Google のアプリ審査を申請中のためで、不具合ではありません。
+    「詳細」→「安全ではないページに移動」で進めます。
+    審査が完了するまで、新規に利用できる人数には Google 側の上限（100 人）があります。
   </p>
-  <ul>
-    <li>歌詞の一部（歌いだしなど）での部分一致検索</li>
-    <li>ひらがなだけ、ローマ字だけの入力</li>
-    <li>漢字の間違い、送り仮名や濁点の違い</li>
-    <li>曲名とアーティスト名の組み合わせ</li>
-  </ul>
+</div>
 
-  <h2>何をするアプリか</h2>
-  <ol>
-    <li>利用者本人の Google アカウントに、本人の許可のもとで<strong>読み取り専用</strong>で接続します</li>
-    <li>本人が高く評価した曲、および本人のプレイリストの一覧を取得します</li>
-    <li>各曲の歌詞を取得し、検索用の索引を作ります</li>
-    <li>その索引に対して、あいまい検索を提供します</li>
-  </ol>
+<h2>要求する権限</h2>
+<p>サインイン時にお願いする権限は次の 3 つで、これがすべてです。</p>
+<div class="scroll">
+<table>
+  <thead><tr><th>権限</th><th>用途</th></tr></thead>
+  <tbody>
+    <tr><td><code>openid</code></td><td>どの Google アカウントかを識別する</td></tr>
+    <tr><td><code>userinfo.email</code></td><td>アカウントの取り違えを検出する</td></tr>
+    <tr><td><code>youtube.readonly</code></td><td>高評価した動画と再生リストを<strong>読み取る</strong></td></tr>
+  </tbody>
+</table>
+</div>
+<p>
+  <code>youtube.readonly</code> は<strong>読み取り専用</strong>です。高評価の付け外し、再生リストの編集、
+  動画の投稿・削除、コメント、チャンネルの管理は、いずれも<strong>技術的に実行できません</strong>。
+  視聴履歴・購読チャンネル・支払い情報にもアクセスしません。
+</p>
 
-  <div class="box">
-    <p>
-      <strong>書き込みは一切行いません。</strong>
-      要求する権限は <code>youtube.readonly</code>（ライブラリの読み取り）と、
-      ログインのための <code>openid</code> / <code>userinfo.email</code> の 3 つです。いずれも読み取り専用で、
-      再生履歴の変更、高評価の付け外し、プレイリストの編集、動画の投稿は、いずれも技術的に不可能です。
-    </p>
-  </div>
-
-  <h2>誰が使えるか</h2>
+<h2>歌詞は表示しません</h2>
+<div class="card callout">
   <p>
-    現在は限定公開です。作者と、作者がアクセスを許可した利用者だけが利用できます。
-    利用者はそれぞれ自分の Google アカウントでログインし、自分のライブラリだけを検索します。
-    ソフトウェアの構成は下記リポジトリで確認できます。
+    曲を探すために歌詞を使いますが、<strong>検索の索引を作るためだけ</strong>です。
+    検索結果に出るのは曲名・アーティスト・サムネイルと、
+    「歌詞の読みがほぼ一致しました」のような<em>一致した理由</em>だけで、
+    歌詞の本文も、一致した行も、その前後も表示しません。
   </p>
+</div>
 
-  <h2>問い合わせ</h2>
-  <p>
-    <a href="mailto:hashimoto7965@gmail.com">hashimoto7965@gmail.com</a>
-  </p>
+<h2>料金</h2>
+<p>
+  <strong>現在は無料です。</strong>将来的に有料プランを設ける予定がありますが、
+  課金を開始する場合は事前に告知します。黙って課金を始めることはしません。
+</p>
 
-  <div class="meta">
-    <p>
-      本アプリは YouTube API サービスを利用しています。ご利用にあたっては
-      <a href="https://www.youtube.com/t/terms">YouTube 利用規約</a>および
-      <a href="https://policies.google.com/privacy">Google プライバシーポリシー</a>が適用されます。
-    </p>
-    <p>最終更新: 2026-09-16</p>
-  </div>
+<h2>データの扱い</h2>
+<p>
+  取得した情報は AWS の東京リージョンに暗号化して保存し、広告には使わず、第三者に提供しません。
+  連携の解除とデータ削除の方法を含め、詳細は
+  <a href="./privacy.html">プライバシーポリシー</a>に書いてあります。
+</p>
+
+<h2>問い合わせ</h2>
+<p>
+  アプリ内の問い合わせ・不具合報告フォーム、または
+  <a href="mailto:hashimoto7965@gmail.com">hashimoto7965@gmail.com</a> まで。
+</p>
+
+<footer>
+  <a href="./privacy.html">プライバシーポリシー</a> ／
+  <a href="./terms.html">利用規約</a><br>
+  本サービスは YouTube API サービスを利用しています。ご利用にあたっては
+  <a href="https://www.youtube.com/t/terms" target="_blank" rel="noopener noreferrer">YouTube 利用規約</a>および
+  <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google プライバシーポリシー</a>が適用されます。<br>
+  最終更新: 2026-09-24
+</footer>
+
 </div>
 </body>
 </html>
